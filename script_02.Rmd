@@ -21,14 +21,38 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Once you have finished cleaning your data, figure out the course with the highest enrollment. And figure out how many students are enrolled in Gov 50. If you get a number much lower than 151, you have done something wrong . . .
 
+```{r}
+raw <- read_excel("raw_data/class_enrollment_summary_by_term_9-17-2020.xlsx",
+                  skip = 3)
 
+en_fall_2020 <- raw %>%
+  select(-c(Grad, NonDegree, XReg, VUS, Employee)) %>%
+  filter(UGrad >= 10) %>%
+  arrange(desc(UGrad)) %>%
+  clean_names()
 
+highest <- en_fall_2020 %>%
+  slice(2)
+
+gov50 <- en_fall_2020 %>%
+  filter(course_name == "Data") %>%
+  select(u_grad)
+
+highest
+gov50
+```
 
 ### Scene 2
 
 **Prompt:** Create a bar plot of the 10 biggest courses. Order the plot so that courses appear in descending order. You will want to use coord_flip() to make your plot easy to read.
 
+```{r}
+highest10 <- en_fall_2020 %>%
+  slice(2:11)
 
+highest10 %>%
+  ggplot(mapping = aes(x = course_name, y = ))
+```
 
 
 ### Scene 3
